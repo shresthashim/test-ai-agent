@@ -1,0 +1,79 @@
+# Python-specific ignores
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.virtualenv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Pip and package management
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+*.whl
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*~
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+*.sqlite3
+
+# Byte-compiled / optimized / DLL files
+*.so
+*.dll
+*.exe
+
+# C extensions
+*.c
+*.h
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+*.env
+
+# Testing and profiling
+profile/
+*.prof
+*.lprof
