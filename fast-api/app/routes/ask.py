@@ -1,5 +1,4 @@
-from fastapi import APIRouter
-from fastapi.responses import StreamingResponse
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from langchain_core.messages import HumanMessage, AIMessage
 from app.agent.agent import agent_executor
@@ -8,18 +7,34 @@ router = APIRouter()
 
 class AgentQuery(BaseModel):
     question: str
+    thread_id: str = "session-1" 
 
-@router.post("/ask")
+class AgentResponse(BaseModel):
+    response: str
+
+@router.post("/ask", response_model=AgentResponse, tags=["Agent"])
 async def ask_agent(query: AgentQuery):
-    async def event_generator():
-        inputs = {
-            "messages": [HumanMessage(content=query.question)],
-        }
-        config = {"configurable": {"thread_id": "session-1"}}
+  
+    if not query.question.strip():
+        raise HTTPException(status_code=400, detail="Question cannot be empty.")
 
-        async for step in agent_executor.astream(inputs, config, stream_mode="values"):
+    inputs = {
+        "messages": [HumanMessage(content=query.question)],
+    }
+    config = {"configurable": {"thread_id": query.thread_id}}
+
+    full_response = []
+
+    try:
+   
+        for step in agent_executor.stream(inputs, config, stream_mode="values"):
             message = step["messages"][-1]
             if isinstance(message, AIMessage):
-                yield message.content + "\n"
+                full_response.append(message.content)
+      
+        combined_response = "".join(full_response)
 
-    return StreamingResponse(event_generator(), media_type="text/plain")
+        return {"response": combined_response}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Agent error: {str(e)}")
