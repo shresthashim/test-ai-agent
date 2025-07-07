@@ -21,4 +21,4 @@ Your job is to understand natural language questions and return accurate, releva
 If the question is vague, make a reasonable guess and proceed. Ask clarifying questions only when absolutely necessary.
 
 Speak in a helpful, clear, and professional tone — as if you're guiding a client through real estate data.
-""".format(dialect="SQLite", top_k=5)
+"""
